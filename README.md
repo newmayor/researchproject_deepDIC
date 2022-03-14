@@ -1,15 +1,19 @@
 # Deep DIC: Deep Learning-Based Digital Image Correlation for End-to-End Displacement and Strain Measurement
 
-Digital image correlation (DIC) has become an industry standard to retrieve accurate displacement and strain measurement in tensile testing and other material characterization. Though traditional DIC offers a high precision estimation of deformation for general tensile testing cases, the prediction becomes unstable at large deformation or when the speckle patterns start to tear. In addition, traditional DIC requires a long computation time and often produces a low spatial resolution output affected by filtering and speckle pattern quality. To address these challenges, we propose a new deep learning-based DIC approach – Deep DIC, in which two convolutional neural networks, DisplacementNet and StrainNet, are designed to work together for end-to-end prediction of displacements and strains. DisplacementNet predicts the displacement field and adaptively tracks the region of interest. StrainNet predicts the strain field directly from the image input without relying on the displacement prediction, which significantly improves the strain prediction accuracy. A new dataset generation method is developed to synthesize a realistic and comprehensive dataset, including generation of speckle patterns and deformation of the speckle image with synthetic displacement field. Though trained on synthetic dataset only, Deep DIC is tested on both simulated and experimental data. Deep DIC gives highly consistent and comparable predictions of displacement and strain with those obtained from commercial DIC software, while it outperforms commercial software with very robust strain prediction even at large and localized deformation and varied pattern qualities. In addition, Deep DIC is capable of real-time prediction of deformation with a calculation time down to milliseconds.
+Digital image correlation (DIC) has become an industry standard to retrieve accurate displacement and strain measurement in tensile testing and other material characterization using computer vision and image datasets. This project proposes a new deep learning-based DIC approach – Deep DIC, in which two convolutional neural networks, DisplacementNet and StrainNet, are designed to work together for end-to-end prediction of displacements and strains. 
+
+A new dataset generation method is developed to synthesize a realistic and comprehensive dataset, including generation of speckle patterns and deformation of the speckle image with synthetic displacement field. 
 
 The manuscript of this research work can be found in https://arxiv.org/abs/2110.13720
 
 ## Dependencies
-Deep-DIC is implemented in [PyTorch](https://pytorch.org/) and tested with Ubuntu 20.04, please install PyTorch first following the official instruction. 
+Deep-DIC is implemented in [PyTorch](https://pytorch.org/) and tested with Ubuntu 20.04, please install the dependencies using the "pip install requirements.txt ". 
+
 - Python 3.7 
 - PyTorch (version = 1.16)
 - Torchvision (version = 0.7.0)
 - Pillow (version = 7.2)
+- Scikit-learn==1.0.1
 - numpy
 - scipy
 - CUDA
