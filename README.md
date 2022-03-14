@@ -1,4 +1,5 @@
-# Deep DIC: Deep Learning-Based Digital Image Correlation for End-to-End Displacement and Strain Measurement
+# Deep DIC (Deep Learning for Digital Image Correlation)
+### A look at Deep Learning for predicting strain and displacement fields in material grains using computer vision and Digital Image Correlation
 
 Digital image correlation (DIC) has become an industry standard to retrieve accurate displacement and strain measurement in tensile testing and other material characterization using computer vision and image datasets. This project proposes a new deep learning-based DIC approach – Deep DIC, in which two convolutional neural networks, DisplacementNet and StrainNet, are designed to work together for end-to-end prediction of displacements and strains. 
 
