@@ -76,11 +76,11 @@ First generate a dataset:
 python3 dataset_generation/generate_specklepattern.py
 ```
 
-- User will be prompted for pairs of images N desired. Try generating N = 1 or 2 to ensure generation works.
+User will be prompted for pairs of images N desired. Try generating N = 1 or 2 to ensure generation works.
 
-- User will be prompted try specify if generating a training set or test-validation set. 
-      Enter 'train' or 'test'. Note: DisplacementNet requires images present in both directories to begin training.
-      Dataset saved to: 
+User will be prompted try specify if generating a training set or test-validation set. 
+Enter 'train' or 'test'. Note: DisplacementNet requires images present in both directories to begin training.
+Dataset saved to: 
       .
       ├── ...
       ├── dataset_samples                             
