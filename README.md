@@ -71,9 +71,9 @@ Deep-DIC is implemented in [PyTorch](https://pytorch.org/) and tested with Ubunt
 
 First generate a dataset:
 
-```sh
+`
 python3 dataset_generation/generate_specklepattern.py
-```
+`
 
 User will be prompted for pairs of images N desired. Try generating N = 1 or 2 to ensure generation works.
 
