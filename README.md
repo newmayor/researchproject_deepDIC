@@ -7,7 +7,7 @@ A new dataset generation method is developed to synthesize a realistic and compr
 The manuscript of this research work can be found in https://arxiv.org/abs/2110.13720
 
 ## Dependencies
-Deep-DIC is implemented in [PyTorch](https://pytorch.org/) and tested with Ubuntu 20.04, please install the dependencies using the "pip install requirements.txt ". 
+Deep-DIC is implemented in [PyTorch](https://pytorch.org/) and tested with Ubuntu 20.04, please install the dependencies using the 'pip install requirements.txt'. 
 
 - Python 3.7 
 - PyTorch (version = 1.16)
