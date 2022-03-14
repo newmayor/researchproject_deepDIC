@@ -24,6 +24,7 @@ Deep-DIC is implemented in [PyTorch](https://pytorch.org/) and tested with Ubunt
       ├── notebooks                             # contains ML model for DisplacementNet and notebook for testing ML model
       ├── dataset_generation                    # scripts to generate speckle image dataset
       ├── notebooks_archive                     # contains previously developed ML models to sanity check against
+      ├── dataset_samples                       # samples of synethtically generate images used in training
       ├── test                                  # test scripts and notebooks for sanity checking data
       ├── requirements.txt                      # install dependencies from this file
       └── README.md
@@ -39,9 +40,19 @@ Deep-DIC is implemented in [PyTorch](https://pytorch.org/) and tested with Ubunt
 #### Image Dataset Generation
       .
       ├── ...
-      ├── notebooks                             
-      │     ├── DisplacementNet_train.ipynb                 # train DisplacementNet model on synthetic image dataset
-      │     ├── experiment_displacementNet.ipynb            # test performance of trained D-Net model and visualize against groundtruth
+      ├── dataset_generation                             
+      │     ├── generate_specklepattern.py                  # generate small deformation speckle patterns
+      │     ├── warp_severe.py                              # generate large deformation speckle patterns
+      └── ...
+
+#### Sample Dataset
+      .
+      ├── ...
+      ├── dataset_samples                             
+      │     ├── gts1                      # groundtruths for model training
+      │     │     ├── test                # contains gt for cross validation step  
+      │     ├── imgs                      # image pairs for model training
+      │     │     ├── test                # contains image pairs for cross validation step  
       └── ...
 
 #### Testing
