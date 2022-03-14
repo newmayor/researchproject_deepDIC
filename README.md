@@ -67,4 +67,32 @@ Deep-DIC is implemented in [PyTorch](https://pytorch.org/) and tested with Ubunt
       └── ...
 
 
-## Usage
+Usage
+-----
+
+First generate a dataset:
+
+```sh
+python3 dataset_generation/generate_specklepattern.py
+```
+
+- User will be prompted for pairs of images N desired. Try generating N = 1 or 2 to ensure generation works.
+
+- User will be prompted try specify if generating a training set or test-validation set. 
+      Enter 'train' or 'test'. Note: DisplacementNet requires images present in both directories to begin training.
+      Dataset saved to: 
+      .
+      ├── ...
+      ├── dataset_samples                             
+      │     ├── gts1                      # groundtruths for model training
+      │     │     ├── test                # contains gt for cross validation step  
+      │     ├── imgs                      # image pairs for model training
+      │     │     ├── test                # contains image pairs for cross validation step  
+      └── ...
+
+
+- User will be prompted to specify if 'cracking' in images is desired:
+      Enter 'Y' or 'N'. For first pass at running code, enter 'N'
+
+- User will be prompted to specify which datapoint label to start from. This is handy if previous generation failed out, otherwise enter 0.
+
