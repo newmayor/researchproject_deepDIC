@@ -68,7 +68,6 @@ Deep-DIC is implemented in [PyTorch](https://pytorch.org/) and tested with Ubunt
 
 
 ## Usage
------
 
 First generate a dataset:
 
