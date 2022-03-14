@@ -34,10 +34,23 @@ We provide:
       ├── notebooks                             # contains ML model for DisplacementNet and notebook for testing ML model
       ├── notebooks_archive                     # contains previously developed ML models to sanity check against
       ├── test                                  # test scripts and notebooks for sanity checking data
+      ├── requirements.txt                      # install dependencies from this file
+      └── README.md
+
+### Main Notebooks
+      .
+      ├── ...
+      ├── notebooks                             
+      │     ├── DisplacementNet_train.ipynb                 # train DisplacementNet model on synthetic image dataset
+      │     ├── experiment_displacementNet.ipynb            # test performance of trained D-Net model and visualize against groundtruth
+      └── ...
+
+### Testing
+      .
+      ├── ...
+      ├── test                                  # test scripts and notebooks for sanity checking data
       │     ├── stats_analysis.ipynb            # compute statistical metrics of synthetic image dataset
       │     ├── log_visualize.ipynb             # visualize model training loss
       │     ├── tensile_images.ipynb            # compile dataset of real tensile test images
       │     ├── experiment_tensileTest.ipynb    # test prediction of D-Net on real tensile test images
-      ├── requirements.txt                      # install dependencies from this file
-      └── README.md
-
+      └── ...
