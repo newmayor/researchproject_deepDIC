@@ -90,8 +90,8 @@ Dataset saved to:
       └── ...
 
 
-- User will be prompted to specify if 'cracking' in images is desired:
-      Enter 'Y' or 'N'. For first pass at running code, enter 'N'
+User will be prompted to specify if 'cracking' in images is desired:
+Enter 'Y' or 'N'. For first pass at running code, enter 'N'
 
-- User will be prompted to specify which datapoint label to start from. This is handy if previous generation failed out, otherwise enter 0.
+User will be prompted to specify which datapoint label to start from. This is handy if previous generation failed out, otherwise enter 0.
 
