@@ -18,26 +18,17 @@ Deep-DIC is implemented in [PyTorch](https://pytorch.org/) and tested with Ubunt
 - scipy
 - CUDA
 
-## Overview
-We provide:
-- Datasets: training dataset, validation dataset and test dataset.
-      https://drive.google.com/drive/folders/1n2axHsJ3flHxk_edceY6eOfiX7GjW_d6?usp=sharing
-- Pre-trained models:
-      https://drive.google.com/drive/folders/1n2axHsJ3flHxk_edceY6eOfiX7GjW_d6?usp=sharing
-    - DisplacementNet
-    - StrainNet
-- Code to test with pair of speckle images.
-- Code to train a the two CNNs with dataset.
 
 ## File Structure
       .
       ├── notebooks                             # contains ML model for DisplacementNet and notebook for testing ML model
+      ├── dataset_generation                    # scripts to generate speckle image dataset
       ├── notebooks_archive                     # contains previously developed ML models to sanity check against
       ├── test                                  # test scripts and notebooks for sanity checking data
       ├── requirements.txt                      # install dependencies from this file
       └── README.md
 
-### Main Notebooks
+#### Main Notebooks
       .
       ├── ...
       ├── notebooks                             
@@ -45,7 +36,15 @@ We provide:
       │     ├── experiment_displacementNet.ipynb            # test performance of trained D-Net model and visualize against groundtruth
       └── ...
 
-### Testing
+#### Image Dataset Generation
+      .
+      ├── ...
+      ├── notebooks                             
+      │     ├── DisplacementNet_train.ipynb                 # train DisplacementNet model on synthetic image dataset
+      │     ├── experiment_displacementNet.ipynb            # test performance of trained D-Net model and visualize against groundtruth
+      └── ...
+
+#### Testing
       .
       ├── ...
       ├── test                                  # test scripts and notebooks for sanity checking data
@@ -54,3 +53,6 @@ We provide:
       │     ├── tensile_images.ipynb            # compile dataset of real tensile test images
       │     ├── experiment_tensileTest.ipynb    # test prediction of D-Net on real tensile test images
       └── ...
+
+
+## Usage
