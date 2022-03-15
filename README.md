@@ -43,7 +43,7 @@ Deep-DIC is implemented in [PyTorch](https://pytorch.org/) and tested with Ubunt
 
 ## Usage
 
-#### Generate a dataset:
+#### Generate a dataset
 
 File structure
       .
