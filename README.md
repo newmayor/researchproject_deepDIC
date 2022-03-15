@@ -25,36 +25,10 @@ Deep-DIC is implemented in [PyTorch](https://pytorch.org/) and tested with Ubunt
       ├── notebooks                             # contains ML model for DisplacementNet and notebook for testing ML model
       ├── dataset_generation                    # scripts to generate speckle image dataset
       ├── notebooks_archive                     # contains previously developed ML models to sanity check against
-      ├── dataset_samples                       # samples of synethtically generate images used in training
       ├── test                                  # test scripts and notebooks for sanity checking data
       ├── requirements.txt                      # install dependencies from this file
       └── README.md
 
-#### Main Notebooks
-      .
-      ├── ...
-      ├── notebooks                             
-      │     ├── DisplacementNet_train.ipynb                 # train DisplacementNet model on synthetic image dataset
-      │     ├── experiment_displacementNet.ipynb            # test performance of trained D-Net model and visualize against groundtruth
-      └── ...
-
-#### Image Dataset Generation
-      .
-      ├── ...
-      ├── dataset_generation                             
-      │     ├── generate_specklepattern.py                  # generate small deformation speckle patterns
-      │     ├── warp_severe.py                              # generate large deformation speckle patterns
-      └── ...
-
-#### Sample Dataset
-      .
-      ├── ...
-      ├── dataset_samples                             
-      │     ├── gts1                      # groundtruths for model training
-      │     │     ├── test                # contains gt for cross validation step  
-      │     ├── imgs                      # image pairs for model training
-      │     │     ├── test                # contains image pairs for cross validation step  
-      └── ...
 
 #### Testing
       .
@@ -69,7 +43,15 @@ Deep-DIC is implemented in [PyTorch](https://pytorch.org/) and tested with Ubunt
 
 ## Usage
 
-First generate a dataset:
+#### Generate a dataset:
+
+File structure
+      .
+      ├── ...
+      ├── dataset_generation                             
+      │     ├── generate_specklepattern.py                  # generate pairs of small & large deformation speckle patterns and their groundtruths
+      └── ...
+
 
 `
 python3 dataset_generation/generate_specklepattern.py
@@ -80,14 +62,14 @@ python3 dataset_generation/generate_specklepattern.py
 - User will be prompted try specify if generating a training set or test-validation set. 
       Enter 'train' or 'test'. Note: DisplacementNet requires images present in both directories to begin training.
       Dataset saved to directories below
-
       .
       ├── ...
-      ├── dataset_samples                             
-      │     ├── gts1                      # groundtruths for model training
-      │     │     ├── test                # contains gt for cross validation step  
-      │     ├── imgs                      # image pairs for model training
-      │     │     ├── test                # contains image pairs for cross validation step  
+      ├── dataset_generation
+      │     ├── dataset_samples                             
+      │     │     ├── gts1                      # groundtruths for model training
+      │     │     │     ├── test                # contains gt for cross validation step  
+      │     │     ├── imgs                      # image pairs for model training
+      │     │     │     ├── test                # contains image pairs for cross validation step  
       └── ...
 
 
@@ -95,4 +77,16 @@ python3 dataset_generation/generate_specklepattern.py
       Enter 'Y' or 'N'. For first pass at running code, enter 'N'
 
 - User will be prompted to specify which datapoint label to start from. This is handy if previous generation failed out, otherwise enter 0.
+
+Once image generation is complete, ensure the dataset_samples dir contain the correct number of data. These will be used to train the models.
+
+#### Train the model
+File structure
+      .
+      ├── ...
+      ├── notebooks                             
+      │     ├── DisplacementNet_train.ipynb                 # train DisplacementNet model on synthetic image dataset
+      │     ├── experiment_displacementNet.ipynb            # test performance of trained D-Net model and visualize against groundtruth
+      └── ...
+
 

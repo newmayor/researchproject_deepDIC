@@ -1,35 +1,26 @@
+#!/usr/bin/python
+
 import matplotlib.pyplot as plt
 import numpy as np
 import os
 import random
-import time
+# import time
 
 from numpy.lib.function_base import meshgrid
-from scipy.ndimage.filters import gaussian_filter
+# from scipy.ndimage.filters import gaussian_filter
 
-from skimage.color import rgb2gray
+# from skimage.color import rgb2gray
 from tqdm import tqdm
 from scipy import signal, ndimage, interpolate
 from numpy import sin, cos, tan
-from PIL import Image
-'''
-x and y are random variables. We are building a elliptical speckle pattern algorithm using multivariate gaussian noise generation. This python version is based off of the algorithm originally built by Prof. Ping Guo and Dr. Ru Yang at Northwestern University.
-
-Python script work done by: Numair Ahmed, MS Robotics, Northwestern University 
-
-VER         DATE            AUTHOR              COMMENTS
-0.00.1      10-30.2021      Numair Ahmed
-0.25.0      11-25.2021      Numair Ahmed        completed geometry generation
-1.00.0      12-01.2021      Numair Ahmed        Initial Release. generates randomized surface geometry \
-                                                and applies distortion field
-1.50.0      12-04.2021      Numair Ahmed        generates randomized triangular cracks on left or right side of image
+# from PIL import Image
+from imageio import imread
 
 
-'''
 
 dirname = os.path.dirname(__file__)
 
-def generate_geometry():
+def generate_geometry(crack_form=False):
     x,y = np.meshgrid(range(1,513), range(1,513))
 
 
@@ -75,8 +66,8 @@ def generate_geometry():
     # plt.savefig('img_input_6.png')
     # plt.show()
 
-    # if crack_form == True:
-    #     img_input = crack_formation(img_input)
+    if crack_form == True:
+        img_input = crack_formation(img_input)
 
     img_input = signal.medfilt2d(img_input, kernel_size=7)
     img_input = ndimage.gaussian_filter(img_input, 2)
@@ -90,7 +81,7 @@ def generate_geometry():
     print()
     return img_input
 
-def crack_formation(img_input, gt_x, gt_y):
+def crack_formation(img_input):
 
     ##testing parameters. comment parameters define in true use-case below
     # img_input = np.ones((512,512)) #dummy image
@@ -130,16 +121,12 @@ def crack_formation(img_input, gt_x, gt_y):
             if reversal == 0:
                 if (row >= (abs(int(m1*col)) + crack_start)) and (row<= (int(m2*col) +crack_end))  and col <L:
                     img_input[row,col] = 0
-                    gt_x[row,col] = 0
-                    gt_y[row,col] = 0
             elif reversal ==1:
                 if (row >= (abs(int(m1*col)) + crack_start)) and (row<= (int(m2*col) +crack_end))  and col >-L:
                     img_input[row,-col] = 0
-                    gt_x[row,-col] = 0
-                    gt_y[row,-col] = 0
                 
 
-    return img_input, gt_x, gt_y
+    return img_input
 
 def gauss2D(x,y,sig1,mu1,sig2,mu2,amp,vo):
     
@@ -153,31 +140,28 @@ def gauss2D(x,y,sig1,mu1,sig2,mu2,amp,vo):
     
     return amp*(np.exp(-(xterm + yterm))) + vo
 
-#prototype grayscaling function. something is not working right bc it returns a scalar..
-# def rgb2gray(rgb):
-#     return np.dot(rgb, [0.2989, 0.5870, 0.1140])
+def warp_image(default=True, img_path='test', crack_form=False, testing=False):
 
-
-def warp_image(crack_form=False, testing=False):
-
-    if testing == True:
+    if crack_form == True and testing == False:
+        print("\ngenerating images with crack")
+        input_img = generate_geometry(crack_form=True)
+    elif crack_form == False and testing == False:
+        print("\ngenerating images with no crack")
+        input_img = generate_geometry(crack_form=False)
+    elif testing == True:
         print("\ntesting warp_image() function using test image .dat file")
         path = os.path.join(dirname, 'images/image_samples/raw_img.dat')
         input_img = np.loadtxt(path)
-    elif testing == False:
-        input_img = generate_geometry()
-
+    
         
 
 
-    # plt.figure()
-    # plt.imshow(input_img, cmap='gray')
         
-    # input_img = crack_formation(input_img)
+    # input_img = crack_formation()
     
     
     # print(type(input_img))
-    # plt.figure()
+    # plt.figure(1)
     # plt.imshow(input_img, cmap='gray')
     # plt.show()
 
@@ -376,16 +360,8 @@ def warp_image(crack_form=False, testing=False):
     # plt.show()
 
     print()
-    disp_field_x1 = disp_field_x - (Disp_gaus_1x + Disp_gaus_2x)
-    disp_field_y1 = disp_field_y - (Disp_gaus_1y + Disp_gaus_2y)
-    
-    # form crack into the groundtruth warp fields as well, using same procedure as image cracking
-    if crack_form == True and testing == False:
-        print("\ngenerating images with crack")
-        input_img, disp_field_x, disp_field_y = crack_formation(input_img, disp_field_x1, disp_field_y1)
-    elif crack_form == False and testing == False:
-        disp_field_x, disp_field_y = disp_field_x1, disp_field_y1
-    
+    disp_field_x = disp_field_x - (Disp_gaus_1x + Disp_gaus_2x)
+    disp_field_y = disp_field_y - (Disp_gaus_1y + Disp_gaus_2y)
     
 
     # print(f"dispx {disp_field_x.shape}\ndispy {disp_field_y.shape}\ndispx_out {disp_field_output[0].shape} \ndispy_out {disp_field_output[1].shape}  ")
@@ -405,7 +381,15 @@ def warp_image(crack_form=False, testing=False):
     # plt.figure()
     # plt.plot(Disp_gaus_1y)
     
-
+    # plt.figure()
+    # plt.title('disp_field_ux')
+    # plt.imshow(disp_field_x[50:450,50:450])
+    # plt.colorbar()
+    # plt.figure()
+    # plt.title('disp_field_uy')
+    # plt.imshow(disp_field_y[50:450,50:450])
+    # plt.colorbar()
+    # plt.show()
 
     Xgrid, Ygrid = meshgrid(range(0,512), range(0,512)) #create 512x512 meshgrid containing range of values 1:512
     # plt.figure()
@@ -454,20 +438,7 @@ def warp_image(crack_form=False, testing=False):
     # plt.title('Ygrid_d')
     # plt.colorbar()
     # plt.show()
-
-    # plt.figure()
-    # plt.title('orig img')
-    # plt.imshow(input_img, cmap='gray')
-    # plt.figure()
-    # plt.title('disp_field_ux')
-    # plt.imshow(disp_field_x)
-    # plt.colorbar()
-    # plt.figure()
-    # plt.title('disp_field_uy')
-    # plt.imshow(disp_field_y)
-    # plt.colorbar()
-    # plt.show()
-
+    
     # print(f" {Xgrid_d.shape} {Ygrid_d.shape} ")
     # print(f" {Xgrid.shape} {Ygrid.shape} ")
     # print(f"{input_img[crop_1:crop_2, crop_1:crop_2].shape} ")
@@ -477,6 +448,7 @@ def warp_image(crack_form=False, testing=False):
         warped_in[ind] = interpolate.griddata(Xgrid_d[ind,:], row, Xgrid[ind,:], method='cubic')
         
 
+    # interpolate along Ygrid_d not working for some reason. Leaving commented out
     warped = np.zeros(input_img.shape)
     for ind,row in enumerate(warped_in):
         warped[:,ind] = interpolate.griddata(Ygrid_d[:,ind], warped_in[:,ind], Ygrid[:,ind], method='cubic')
@@ -487,12 +459,11 @@ def warp_image(crack_form=False, testing=False):
     
     # print(f'\n{disp_field_x.shape=}, {disp_field_y.shape=}')
     # print(f'{input_img.shape=}\n ')
-    
+
     # crop the images using a random corner point
     crop_end = (crop_2 - crop_1) - 256
     crop_pt = np.random.randint(0,crop_end) #limit crop pt picking to ((crop_2 - crop_1) - 256) so we ensure the final gt file saved is 256x256 and does not exceed the matrix size after crop_1:crop_2 cropping
-    warped = warped[crop_pt:crop_pt+256, crop_pt:crop_pt+256]
-    input_img = input_img[crop_pt:crop_pt+256, crop_pt:crop_pt+256]
+
 
     # crop the disp fields accordingly and store both in same list to export as .mat file
     disp_field_x = disp_field_x[crop_pt:crop_pt+256, crop_pt:crop_pt+256]
@@ -501,6 +472,166 @@ def warp_image(crack_form=False, testing=False):
     disp_field_output.append(disp_field_x)
     disp_field_output.append(disp_field_y)
     disp_field_output = np.asarray(disp_field_output)
+    print()
+
+
+
+
+
+    ## SEVERE WARPING
+    # coeff_sx = -2.15 #0.03
+    # coeff_sy = 2 #2
+    coeff_shear = 0.5 #0.1
+    
+    # sx = np.random.rand()*coeff_sx + 0.985 #scale x, stretch/compress x
+    sy = 1#coeff_sy - sx #scale y, stretch/compress y
+    sh_x = (np.random.rand()-0.5) * coeff_shear #sheer x
+    sh_y = (np.random.rand()-0.5) * coeff_shear #sheer y
+    th = random.vonmisesvariate(np.pi, 0)
+
+    coeff_sx = -0.05 #0.03
+    sy = 1
+    sx = np.random.rand()*coeff_sx + 0.985 #scale x, stretch/compress x
+    
+    scale_matrix = np.array(
+        [
+            [sx  , 0 , 0 ],
+            [0  , sy , 0 ],
+            [ 0 , 0  , 1 ]
+        ]
+    )
+
+
+
+    # setup the transform matrix
+    transform_formulation = scale_matrix  
+    transform_formulation = transform_formulation.T #transpose the matrix so homogenous axis is at bottom row so it works in ndimage.affine_transform()    
+
+    grid_lin = np.linspace(-255.5,255.5, 512)
+    x,y = np.meshgrid(grid_lin, grid_lin)
+    x = x.astype(float)
+    y = y.astype(float)
+
+
+    #compelete the affine transform to generate the actual transformation matrix
+    transformx = ndimage.affine_transform(x,np.linalg.inv(transform_formulation))
+    transformy = ndimage.affine_transform(y,np.linalg.inv(transform_formulation))
+
+
+    disp_field_x = x-transformx
+    disp_field_y = y-transformy
+    
+    
+    para = np.random.rand(2,6)*4 - 2
+    poisson = np.random.rand()*0.3 + 0.05
+    mu1 = (para[0,0]/2 +1)/2
+    mu2 = (para[0,2]/2 +1)/2
+    sig1 = para[0,1]+2/8 + 0.05
+    sig2 = para[0,3]+2/8 + 0.05
+    cov1 = sig1**2
+    cov2 = sig2**2
+    amp = para[0,4]*0.1+0.005*np.sign(para[0,4])
+    vo = para[0,5]/2
+    
+    covariances = [
+        [cov1, 0],
+        [0, cov2]
+    ]
+
+    grid_lin = np.linspace(0,1, 512)
+    Xgrid, Ygrid = np.meshgrid(grid_lin, grid_lin)
+
+    
+    # gausxy = 0.6*mv_norm([mu1, mu2], covariances, (512)).T
+    Disp_gaus_1x = 0.6*gauss2D(Xgrid,Ygrid,sig1,mu1,sig2,mu2,amp,vo)
+    Disp_gaus_1y = -0.6*poisson*gauss2D(Xgrid,Ygrid,sig1,mu1,sig2,mu2,amp,vo)
+
+    mu1 = (para[1,0]/2 +1)/2
+    mu2 = (para[1,2]/2 +1)/2
+    sig1 = para[1,1]+2/8 + 0.05
+    sig2 = para[1,3]+2/8 + 0.05
+    cov1 = sig1**2
+    cov2 = sig2**2
+    amp = para[1,4]*0.1+0.005*np.sign(para[1,4])
+    vo = para[1,5]/2
+    
+    Disp_gaus_2x = -0.6*poisson*gauss2D(Xgrid,Ygrid,sig1,mu1,sig2,mu2,amp,vo)
+    Disp_gaus_2y = 0.6*gauss2D(Xgrid,Ygrid,sig1,mu1,sig2,mu2,amp,vo)
+    
+    print()
+    # disp_field_x = disp_field_x - (Disp_gaus_1x + Disp_gaus_2x)
+    # disp_field_y = disp_field_y - (Disp_gaus_1y + Disp_gaus_2y)
+    
+
+    Xgrid, Ygrid = meshgrid(range(0,512), range(0,512)) #create 512x512 meshgrid containing range of values 1:512
+
+
+    # crop the distortion fields 
+    # crop input image to fit the same size
+
+
+    warped = warped[20:370, 20:370]
+    crop_1 = 50 + 20
+    crop_2 = 450 - 30
+    crop_end = (crop_2 - crop_1) - 256
+    crop_pt = np.random.randint(0,crop_end)
+    
+    Xgrid_d = Xgrid - disp_field_x
+    Ygrid_d = Ygrid - disp_field_y
+
+
+    # input_img = input_img[crop_1:crop_2, crop_1:crop_2]
+
+    # disp_field_x = disp_field_x[crop_1:crop_2, crop_1:crop_2]
+    # disp_field_y = disp_field_y[crop_1:crop_2, crop_1:crop_2]
+
+
+    Xgrid_d = Xgrid_d[crop_1:crop_2, crop_1:crop_2]
+    Ygrid_d = Ygrid_d[crop_1:crop_2, crop_1:crop_2]
+    
+    Xgrid = Xgrid[crop_1:crop_2, crop_1:crop_2]
+    Ygrid = Ygrid[crop_1:crop_2, crop_1:crop_2]
+
+
+    disp_field_x = disp_field_x[crop_1:crop_2, crop_1:crop_2]
+    disp_field_y = disp_field_y[crop_1:crop_2, crop_1:crop_2]
+
+
+    
+
+
+    # print(f'{warped.shape=}\n {Xgrid_d.shape=}')
+
+    warped_in = np.zeros(warped.shape)
+    for ind, row in enumerate(warped):
+        warped_in[ind] = interpolate.griddata(Xgrid_d[ind,:], row, Xgrid[ind,:], method='cubic')
+        
+
+    # interpolate along Ygrid_d not working for some reason. Leaving commented out
+    warped2 = np.zeros(warped.shape)
+    for ind,row in enumerate(warped_in):
+        warped2[:,ind] = interpolate.griddata(Ygrid_d[:,ind], warped_in[:,ind], Ygrid[:,ind], method='cubic')
+
+
+    Xgrid_d = Xgrid_d[crop_pt:crop_pt+256, crop_pt:crop_pt+256]
+    Ygrid_d = Ygrid_d[crop_pt:crop_pt+256, crop_pt:crop_pt+256]
+    
+    Xgrid = Xgrid[crop_pt:crop_pt+256, crop_pt:crop_pt+256]
+    Ygrid = Ygrid[crop_pt:crop_pt+256, crop_pt:crop_pt+256]
+
+
+    warped = warped[crop_pt:crop_pt+256, crop_pt:crop_pt+256]
+    warped2 = warped2[crop_pt:crop_pt+256, crop_pt:crop_pt+256]
+    input_img = input_img[crop_pt:crop_pt+256, crop_pt:crop_pt+256]
+
+    # crop the disp fields accordingly and store both in same list to export as .mat file
+    disp_field_x = disp_field_x[crop_pt:crop_pt+256, crop_pt:crop_pt+256]
+    disp_field_y = disp_field_y[crop_pt:crop_pt+256, crop_pt:crop_pt+256]
+
+    disp_field_output2 = []
+    disp_field_output2.append(disp_field_x)
+    disp_field_output2.append(disp_field_y)
+    disp_field_output2 = np.asarray(disp_field_output2)
     print()
 
     # testing
@@ -513,7 +644,7 @@ def warp_image(crack_form=False, testing=False):
     # plt.title('disp_field_ux out')
     # plt.imshow(disp_field_output[0])
     # plt.colorbar()
-    # # plt.savefig('disp_field_ux_nocrop.png')
+    # plt.savefig('disp_field_ux_nocrop.png')
     # plt.figure()
     # plt.title('disp_field_uy out')
     # plt.imshow(disp_field_output[1])
@@ -522,7 +653,7 @@ def warp_image(crack_form=False, testing=False):
     # plt.show()    
 
     # TESTING CODE
-    # save gt and warped images without figure window and axes
+    # # save gt and warped images without figure window and axes
     # w,h = (1,1) #1x1" window
     # dpi = 255 #dots per inch resolution
 
@@ -532,12 +663,12 @@ def warp_image(crack_form=False, testing=False):
     # ax1.set_axis_off()
     # fig1.add_axes(ax1)
     
-    # plt.figure()
+    # # plt.figure()
     # plt.imshow(input_img, cmap='gray')
-    # plt.title('image before warping')
+    # # plt.title('image before warping')
     # plt.savefig('img_gt.png', dpi=dpi)
-    # plt.savefig('img_gt.png')
-    # plt.show()
+    # # plt.savefig('img_gt.png')
+    # # plt.show()
     # print("saved image gt")
 
 
@@ -547,18 +678,34 @@ def warp_image(crack_form=False, testing=False):
     # ax2.set_axis_off()
     # fig2.add_axes(ax2)
     
-    # plt.figure()
-    # plt.title('image after warping')
+    # # plt.figure()
+    # # plt.title('image after warping')
     # plt.imshow(warped, cmap='gray')
     # plt.savefig('img_warped.png', dpi=dpi)
-    # plt.savefig('img_warped.png')
-    # plt.show()
+    # # plt.savefig('img_warped.png')
+    # # plt.show()
+    
+    # fig3 = plt.figure(frameon=False)
+    # fig3.set_size_inches(w,h)
+    # ax3 = plt.Axes(fig3, [0., 0., 1., 1.])
+    # ax3.set_axis_off()
+    # fig3.add_axes(ax3)
+    
+    # # plt.figure()
+    # # plt.title('image after warping')
+    # plt.imshow(warped2, cmap='gray')
+    # plt.savefig('img_2warped.png', dpi=dpi)
+    # # plt.savefig('img_warped.png')
+    # # plt.show()
+    
     
     # print("saved image warped")
     
 
 
-    return input_img, warped, disp_field_output
+    return input_img, warped, warped2, disp_field_output, disp_field_output2
+
+
 
 def main(testing=False):
     from scipy.io import savemat
@@ -590,17 +737,22 @@ def main(testing=False):
     print(f'generating {num_samples} sample pairs\n')
 
     for i in tqdm(np.arange(start_samples,end_samples)):
+        print(f'{dirname} ')
         print(f"generate sample {i}  ")
         
         
         if testing:
-            img_gt, img_warped, disp_fields = warp_image(testing=True)
+            img_gt, img_warped, img_severe_warp, disp_fields, disp_fields_severe = warp_image(testing=True)
         else:
-            img_gt, img_warped, disp_fields = warp_image(crack_form=crack_input)
+            img_gt, img_warped, img_severe_warp, disp_fields, disp_fields_severe = warp_image(crack_form=crack_input)
         
+        print(f'{img_gt.shape=}, {img_warped.shape=}, {img_severe_warp.shape=}, {disp_fields_severe.shape=} ')
 
         field_str = os.path.join(path_gt,f"train_image_{i}_.mat")
         savemat(field_str, {'Disp_field_1': disp_fields})
+        field_str = os.path.join(path_gt,f"train_image_{i}_severe.mat")
+        savemat(field_str, {'Disp_field_1': disp_fields_severe})
+        
 
         # plt.imshow(img_gt, cmap='gray')
         # plt.savefig(os.path.join(path,f"train_image_{i}_1.png"))
@@ -628,19 +780,25 @@ def main(testing=False):
         plt.imshow(img_warped, cmap='gray', aspect='auto')
         plt.savefig(os.path.join(path_img,f"train_image_{i}_2.png"), dpi=dpi)        
 
+
+        fig3 = plt.figure(frameon=False)
+        fig3.set_size_inches(w,h)
+        ax3 = plt.Axes(fig3, [0., 0., 1., 1.])
+        ax3.set_axis_off()
+        fig3.add_axes(ax3)
+        # plt.title('image after warping')
+        plt.imshow(img_severe_warp, cmap='gray', aspect='auto')
+        plt.savefig(os.path.join(path_img,f"train_image_{i}_3.png"), dpi=dpi)        
+
         plt.close('all')
 
     print(f'{num_samples} groundtruth & warped images saved...')
 
 
-
 if __name__ == '__main__':
 
     # __ = generate_geometry()
-    # __, __, __ = warp_image(testing=True) 
-    # for i in range(5):
-    #     __, __, __ = warp_image(crack_form=False, testing=False) 
-    
-    # main(testing=True)
+    # __, __, __, __, __ = warp_image(default=False, testing=True) 
+
+    # __,__,__,__,__ = warp_image()
     main()
-    

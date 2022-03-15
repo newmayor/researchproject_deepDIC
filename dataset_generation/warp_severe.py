@@ -725,11 +725,11 @@ def main(testing=False):
         crack_input = False
 
     if test_or_train == 'train':
-        path_img = os.path.join(dirname , 'images/image_sample_pairs/experiment_samples/imgs_severe')
-        path_gt = os.path.join(dirname , 'images/image_sample_pairs/experiment_samples/gts_severe')
+        path_img = os.path.join(dirname , 'dataset_samples/imgs1')
+        path_gt = os.path.join(dirname , 'dataset_samples/gts1')
     else:
-        path_img = os.path.join(dirname , 'images/image_sample_pairs/imgs9/test')
-        path_gt = os.path.join(dirname , 'images/image_sample_pairs/gts9/test')
+        path_img = os.path.join(dirname , 'dataset_samples/imgs1/test')
+        path_gt = os.path.join(dirname , 'dataset_samples/gts1/test')
     
     
     start_samples = int(input('start image generation from sample #? : '))
@@ -737,6 +737,7 @@ def main(testing=False):
     print(f'generating {num_samples} sample pairs\n')
 
     for i in tqdm(np.arange(start_samples,end_samples)):
+        print(f'{dirname} ')
         print(f"generate sample {i}  ")
         
         
