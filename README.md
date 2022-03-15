@@ -70,7 +70,7 @@ First generate a dataset using `python3 dataset_generation/generate_specklepatte
 Once image generation is complete, ensure the dataset_samples dir contain the correct number of data. These will be used to train the models.
 
 #### Train the model
-Train the DisplacementNet model using the notebook DisplacementNet_train.ipynb. Ensure the correct paths to the training dataset and groundtruths is specified.
+Train the DisplacementNet model using the notebook `DisplacementNet_train.ipynb`. Ensure the correct paths to the training dataset and groundtruths is specified.
 
       .
       ├── ...
