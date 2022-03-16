@@ -1,6 +1,6 @@
 # Generating dataset of speckle images
 
-#### Ensuring dataset is generated as expected is very important before training the model.
+#### IMPORTANT: Ensure dataset is generated as expected before training the model.
 
 File structure
 
