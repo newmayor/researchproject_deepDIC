@@ -47,7 +47,7 @@ First generate a dataset using `python3 dataset_generation/generate_specklepatte
 
 - User will be prompted for pairs of images N desired. Try generating N = 1 or 2 to ensure generation works.
 
-- User will be prompted try specify if generating a training set or test-validation set. 
+- User will be prompted to specify if generating a training set or test-validation set. 
       Enter 'train' or 'test'. Note: DisplacementNet requires images present in both directories to begin training.
       Dataset saved to directories below
 
@@ -56,9 +56,9 @@ First generate a dataset using `python3 dataset_generation/generate_specklepatte
       ├── dataset_generation
       │     ├── dataset_samples                             
       │     │     ├── gts1                      # groundtruths for model training
-      │     │     │     ├── test                # contains gt for cross validation step  
+      │     │     │     ├── test                # gt's for cross validation step  
       │     │     ├── imgs                      # image pairs for model training
-      │     │     │     ├── test                # contains image pairs for cross validation step  
+      │     │     │     ├── test                # image pairs for cross validation step  
       └── ...
 
 
