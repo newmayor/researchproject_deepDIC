@@ -33,7 +33,7 @@ Deep-DIC is implemented in [PyTorch](https://pytorch.org/) and tested with Ubunt
 
 ## Usage
 
-#### Generate a dataset
+### Generate a dataset
 First generate a dataset using `python3 dataset_generation/generate_specklepattern.py`
 
       .
@@ -43,10 +43,10 @@ First generate a dataset using `python3 dataset_generation/generate_specklepatte
       └── ...
 
 
-See README in `../dataset_generation` ..
+#### See README in `../dataset_generation` ..
 
 
-#### Train the model
+### Train the model
 Train the DisplacementNet model using the notebook `DisplacementNet_train.ipynb`. Ensure the correct paths to the training dataset and groundtruths is specified.
 
       .
@@ -56,7 +56,7 @@ Train the DisplacementNet model using the notebook `DisplacementNet_train.ipynb`
       │     ├── experiment_displacementNet.ipynb            # test performance of trained D-Net model and visualize against groundtruth
       └── ...
 
-#### Testing
+### Testing
 Some testing scripts to check sanity of data and real tensile image samples
 
       .
