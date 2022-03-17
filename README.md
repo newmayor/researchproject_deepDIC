@@ -69,4 +69,5 @@ Some testing scripts to check sanity of data and real tensile image samples
 
 
 
+This project is an extension of the deepDIC work done by Prof. Ping Guo and Ru Yang at Northwestern University.
 The manuscript of this research work can be found in [1]: https://arxiv.org/abs/2110.13720
