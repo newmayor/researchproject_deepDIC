@@ -5,6 +5,8 @@ Digital image correlation (DIC) has become an industry standard to retrieve accu
 
 A new dataset generation method is developed to synthesize a realistic and comprehensive dataset, including generation of speckle patterns and deformation of the speckle image with synthetic displacement field. 
 
+This project is an extension of the deepDIC work done by Prof. Ping Guo and Ru Yang at Northwestern University.
+The manuscript of this research work can be found in [1]: https://arxiv.org/abs/2110.13720
 
 ## Dependencies
 Deep-DIC is implemented in [PyTorch](https://pytorch.org/) and tested with Ubuntu 20.04, please install the dependencies using `pip install requirements.txt` . 
@@ -69,5 +71,3 @@ Some testing scripts to check sanity of data and real tensile image samples
 
 
 
-This project is an extension of the deepDIC work done by Prof. Ping Guo and Ru Yang at Northwestern University.
-The manuscript of this research work can be found in [1]: https://arxiv.org/abs/2110.13720
